@@ -10,3 +10,7 @@ abstract class ProductsEvent extends Equatable {
 
 class ProductsFetch extends ProductsEvent {}
 
+class ProductByIdFetch extends ProductsEvent {
+  
+}
+

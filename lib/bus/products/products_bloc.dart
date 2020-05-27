@@ -62,7 +62,7 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
 
   Future<List<Product>> _fetchProducts(int startIndex, int limit) async {
     final response = await httpClient.get(
-        'https://backendapi.turing.com/products?page=$startIndex&limit=$limit&description_length=10');
+        'https://backendapi.turing.com/products?page=$startIndex&limit=$limit');
 
     if (response.statusCode == 200) {
       final List data = json.decode(response.body)['rows'] as List;

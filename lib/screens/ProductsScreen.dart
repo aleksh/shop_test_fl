@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop_test_fl/bus/categories/categories_bloc.dart';
 import 'package:shop_test_fl/bus/products/products_bloc.dart';
 import 'package:shop_test_fl/widgets/ProductTile.dart';
 
 class ProductsScreen extends StatefulWidget {
+  static const routeName = "/";
+
   @override
   _ProductsScreenState createState() => _ProductsScreenState();
 }
@@ -12,7 +15,9 @@ class _ProductsScreenState extends State<ProductsScreen> {
   final _scrollController = ScrollController();
   final _scrollThreshold = 200.0;
   bool _isNewPortionLoading = false;
+
   ProductsBloc _productsBloc;
+  // CategoriesBloc _categoriesBloc;
 
   @override
   void initState() {
@@ -20,9 +25,11 @@ class _ProductsScreenState extends State<ProductsScreen> {
 
     _scrollController.addListener(_onScroll);
     _productsBloc = BlocProvider.of<ProductsBloc>(context);
+    //   _categoriesBloc = BlocProvider.of<CategoriesBloc>(context);
     print("Init Products Screen");
 
     _productsBloc.add(ProductsFetch());
+    //_categoriesBloc.add(CategoriesFetch());
   }
 
   @override
@@ -31,8 +38,51 @@ class _ProductsScreenState extends State<ProductsScreen> {
       appBar: AppBar(
         title: Text("Products"),
       ),
+
+      /* body: BlocBuilder<CategoriesBloc, CategoriesState>(
+        builder: (context, state) {
+          if (state is CategoriesError) {
+            return Center(
+              child: Text("Error Categories Loaded"),
+            );
+          }
+
+          if (state is CategoriesLoaded) {
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text('Categories'),
+                Container(
+                  width: double.infinity,
+                  height: 40,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: state.categories.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final category = state.categories[index];
+                      return Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.0),
+                          color: Colors.blue,
+                        ),
+                        child: Text(category.name),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            );
+          }
+
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        },
+      ),*/
+/////////////////
       body: BlocBuilder<ProductsBloc, ProductsState>(
-        
         builder: (context, state) {
           if (state is ProductsError) {
             return Center(
@@ -48,16 +98,18 @@ class _ProductsScreenState extends State<ProductsScreen> {
               );
             }
 
-            return ListView.builder(
-              controller: _scrollController,
-              itemBuilder: (BuildContext context, int index) {
-                return index >= state.products.length
-                    ? BottomLoader()
-                    : ProductTile(product: state.products[index]);
-              },
-              itemCount: state.hasReachedMax
-                  ? state.products.length
-                  : state.products.length + 1,
+            return GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2),
+                controller: _scrollController,
+                itemBuilder: (BuildContext context, int index) {
+                  return index >= state.products.length
+                      ? state.products.length %2 == 0 ? BottomLoader() : null
+                      : ProductTile(product: state.products[index]);
+                },
+                itemCount: state.hasReachedMax
+                    ? state.products.length
+                    : state.products.length + 1,
             );
           }
 
@@ -66,6 +118,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
           );
         },
       ),
+      //////////////////////////////
     );
   }
 
