@@ -6,7 +6,7 @@ class Category extends Equatable {
   final String description;
   final int departmentId;
 
-  Category({this.id, this.name, this.description, this.departmentId});
+  const Category({this.id, this.name, this.description = "", this.departmentId = 0});
 
   Category copyWith({
     int id,

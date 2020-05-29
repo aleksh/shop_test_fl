@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import "package:flutter/material.dart";
 import 'package:shop_test_fl/screens/ProductScreen.dart';
 import 'package:shop_test_fl/widgets/Price.dart';
@@ -27,12 +26,8 @@ class ProductTile extends StatelessWidget {
               SizedBox(
                 width: 115.0,
                 height: 115.0,
-                child: CachedNetworkImage(
-                  imageUrl:
-                      'https://backendapi.turing.com/images/products/${product.thumbnail}',
-                  placeholder: _loader,
-                  errorWidget: _error,
-                ),
+                child: Image.network(
+                    'https://backendapi.turing.com/images/products/${product.thumbnail}'),
               ),
               Expanded(
                 child: Row(
@@ -53,16 +48,4 @@ class ProductTile extends StatelessWidget {
       ),
     );
   }
-
-  Widget _loader(BuildContext context, String url) {
-    return const Center(
-      child: CircularProgressIndicator(),
-    );
-  }
-
-  Widget _error(BuildContext context, String url, dynamic error) {
-    print(error);
-    return const Center(child: Icon(Icons.error));
-  }
-  
 }

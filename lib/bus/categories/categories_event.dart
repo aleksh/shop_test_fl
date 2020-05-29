@@ -8,3 +8,15 @@ abstract class CategoriesEvent extends Equatable {
 }
 
 class CategoriesFetch extends CategoriesEvent {}
+
+class CategorySelected extends CategoriesEvent {
+  final Category selectedCategory;
+
+  const CategorySelected({this.selectedCategory});
+
+  @override
+  List<Object> get props => [selectedCategory];
+
+  @override
+  String toString() => "CategorySelected ${selectedCategory.name}";
+}
