@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+
 import 'package:shop_test_fl/models/models.dart';
 
 import 'package:http/http.dart' as http;
@@ -33,25 +34,20 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
   Stream<CategoriesState> _mapCategorySelectedToState(
       CategorySelected event) async* {
     if (state is CategoriesLoaded) {
-      print("_mapCategorySelectedToState");
-      print(event.selectedCategory);
       yield CategoriesLoaded(
         categories: (state as CategoriesLoaded).categories,
-        selectedCategories: event.selectedCategory,
+        selectedCategory: event.selectedCategory,
       );
     }
   }
 
   Stream<CategoriesState> _mapCategoriesFetchToState(
       CategoriesFetch event) async* {
-    print("Fetch CategoriesFetch");
-
     try {
       final categories = await _fetchCategories();
-      print(categories);
       yield CategoriesLoaded(
         categories: categories,
-        selectedCategories: allCategories,
+        selectedCategory: allCategories,
       );
     } catch (error) {
       print(error);

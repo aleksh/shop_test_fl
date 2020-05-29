@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import "package:flutter/material.dart";
 import 'package:shop_test_fl/screens/ProductScreen.dart';
 import 'package:shop_test_fl/widgets/Price.dart';
@@ -6,7 +7,7 @@ import "../models/models.dart";
 class ProductTile extends StatelessWidget {
   final Product product;
 
-  const ProductTile({Key key, @required this.product}) : super(key: key);
+  ProductTile({Key key, @required this.product}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +27,14 @@ class ProductTile extends StatelessWidget {
               SizedBox(
                 width: 115.0,
                 height: 115.0,
-                child: Image.network(
-                    'https://backendapi.turing.com/images/products/${product.thumbnail}'),
+                child: CachedNetworkImage(
+                  imageUrl:
+                      'https://backendapi.turing.com/images/products/${product.thumbnail}',
+                  placeholder: (context, url) => const Center(
+                    child: const CircularProgressIndicator(),
+                  ),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                ),
               ),
               Expanded(
                 child: Row(

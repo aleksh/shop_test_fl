@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop_test_fl/bus/categories/categories_bloc.dart';
 import 'package:shop_test_fl/bus/products/products_bloc.dart';
 import 'package:shop_test_fl/widgets/Categories.dart';
 import 'package:shop_test_fl/widgets/ProductTile.dart';
@@ -61,10 +62,13 @@ class _ProductsScreenState extends State<ProductsScreen> {
                     controller: _scrollController,
                     itemBuilder: (BuildContext context, int index) {
                       return index >= state.products.length
-                          ? state.products.length % 2 == 0
+                          ? state.products.length % 2 != 0
                               ? BottomLoader()
                               : null
-                          : ProductTile(product: state.products[index]);
+                          : ProductTile(
+                              product: state.products[index],
+                              key: ValueKey(state.products[index].id),
+                            );
                     },
                     itemCount: state.hasReachedMax
                         ? state.products.length
@@ -78,6 +82,9 @@ class _ProductsScreenState extends State<ProductsScreen> {
               },
             ),
           ),
+
+//_isNewPortionLoading
+
         ],
       ),
     );
@@ -94,9 +101,16 @@ class _ProductsScreenState extends State<ProductsScreen> {
     final currentScroll = _scrollController.position.pixels;
     if (maxScroll - currentScroll <= _scrollThreshold) {
       if (!_isNewPortionLoading) {
-        print("_isNewPortionLoading $_isNewPortionLoading");
-        _productsBloc.add(ProductsFetch());
-        _isNewPortionLoading = true;
+         setState(() {
+          _isNewPortionLoading = true;
+        });
+
+        final catState = BlocProvider.of<CategoriesBloc>(context).state;
+
+        int categoryId =
+            (catState is CategoriesLoaded) ? catState.selectedCategory.id : -1;
+        _productsBloc.add(ProductsFetch(categoryId: categoryId));
+       
       }
     }
   }

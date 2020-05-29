@@ -11,19 +11,19 @@ class CategoriesInitial extends CategoriesState {}
 
 class CategoriesLoaded extends CategoriesState {
   final List<Category> categories;
-  final Category selectedCategories;
+  final Category selectedCategory;
 
   CategoriesLoaded({
     this.categories = const [],
-    this.selectedCategories,
+    this.selectedCategory,
   });
 
   @override
-  List<Object> get props => [categories, selectedCategories];
+  List<Object> get props => [categories, selectedCategory];
 
   @override
   String toString() =>
-      "Categories Loaded { length:${categories.length}} Selected $selectedCategories";
+      "Categories Loaded { length:${categories.length}} Selected $selectedCategory";
 }
 
 class CategoriesError extends CategoriesState {}

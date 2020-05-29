@@ -11,12 +11,12 @@ void main() {
   runApp(
     MultiBlocProvider(
       providers: [
+        BlocProvider<CategoriesBloc>.value(
+          value: CategoriesBloc(httpClient: httpClient),
+        ),
         BlocProvider<ProductsBloc>.value(
           value: ProductsBloc(httpClient: httpClient),
         ),
-        BlocProvider<CategoriesBloc>.value(
-          value: CategoriesBloc(httpClient: httpClient),
-        )
       ],
       child: MyApp(),
     ),
@@ -34,7 +34,8 @@ class MyApp extends StatelessWidget {
       ),
       onGenerateRoute: (RouteSettings settings) {
         var routes = <String, WidgetBuilder>{
-          ProductScreen.routeName: (ctx) => ProductScreen(product: settings.arguments),
+          ProductScreen.routeName: (ctx) =>
+              ProductScreen(product: settings.arguments),
           ProductsScreen.routeName: (ctx) => ProductsScreen(),
         };
         WidgetBuilder builder = routes[settings.name];

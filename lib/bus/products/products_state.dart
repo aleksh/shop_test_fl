@@ -12,19 +12,23 @@ class ProductsInitial extends ProductsState {}
 class ProductsLoaded extends ProductsState {
   final List<Product> products;
   final bool hasReachedMax;
+  final int categoryId;
 
   const ProductsLoaded({
     @required this.products,
     @required this.hasReachedMax,
+    this.categoryId = -1,
   });
 
   ProductsLoaded copyWith({
     List<Product> products,
     bool hasReachedMax,
+    int categoryId = -1,
   }) {
     return ProductsLoaded(
       products: products ?? this.products,
       hasReachedMax: hasReachedMax ?? this.hasReachedMax,
+      categoryId: categoryId ?? this.categoryId,
     );
   }
 
