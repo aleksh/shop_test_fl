@@ -52,7 +52,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                   _isNewPortionLoading = false;
                   if (state.products.isEmpty) {
                     return Center(
-                      child: Text('failed to fetch posts'),
+                      child: Text('No Posts posts'),
                     );
                   }
 
